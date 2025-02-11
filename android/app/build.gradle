@@ -1,0 +1,70 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.4.0'  // Ou uma versão mais recente
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0"  // Se estiver usando Kotlin
+    }
+}
+
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // O Flutter Gradle Plugin deve ser aplicado depois dos plugins Android e Kotlin
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
+if (flutterVersionCode == null) {
+    flutterVersionCode = "1"  // Defina um valor padrão para o versionCode
+}
+
+def flutterVersionName = localProperties.getProperty("flutter.versionName")
+if (flutterVersionName == null) {
+    flutterVersionName = "1.0"  // Defina um valor padrão para o versionName
+}
+
+android {
+    namespace = "com.example.motel_listing"
+    compileSdkVersion 34  // Certifique-se de que o compileSdkVersion está correto
+    ndkVersion flutter.ndkVersion
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.example.motel_listing"
+        minSdkVersion flutter.minSdkVersion  // Certifique-se de que o minSdkVersion é configurado corretamente
+        targetSdkVersion 34
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug  // Se precisar de uma configuração de assinatura diferente, substitua
+        }
+    }
+}
+
+flutter {
+    source = "../.."  // Certifique-se de que o caminho para o código Flutter está correto
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
